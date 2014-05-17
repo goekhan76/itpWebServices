@@ -1,0 +1,74 @@
+<?xml version ='1.0' encoding ='UTF-8' ?>
+<!--
+(c) Gökhan Sevilmis
+2014-05-17
+communication between server and client for authentication and data insertion by SOAP protocol
+ -->
+<definitions name='itpWebservice'
+  targetNamespace='http://localhost/itpproject/service.wsdl'
+  xmlns:tns='http://localhost/itpproject/service.wsdl'
+  xmlns:soap='http://schemas.xmlsoap.org/wsdl/soap/'
+  xmlns:xsd='http://www.w3.org/2001/XMLSchema'
+  xmlns:soapenc='http://schemas.xmlsoap.org/soap/encoding/'
+  xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'
+  xmlns='http://schemas.xmlsoap.org/wsdl/'> 
+
+<message name='wsSqlRequest'>
+  <part name='username' type='xsd:string'/>
+  <part name='password' type='xsd:string'/>
+</message>
+<message name='wsMonRequest'>
+  <part name='jsonData' type='xsd:string'/>
+   <part name='gameName' type='xsd:string'/>
+</message>
+<message name='wsSqlResponse'>
+  <part name='Result' type='xsd:int'/>
+</message> 
+<message name='wsMonResponse'>
+  <part name='Result' type='xsd:int'/>
+</message> 
+
+<portType name='wsPortType'>
+  <operation name='checkUserLogin'>
+    <input message='tns:wsSqlRequest'/>
+    <output message='tns:wsSqlResponse'/>
+  </operation>
+   <operation name='insertMongo'>
+    <input message='tns:wsMonRequest'/>
+    <output message='tns:wsMonResponse'/>
+  </operation>
+</portType> 
+
+<binding name='wsBinding' type='tns:wsPortType'>
+  <soap:binding style='rpc'
+    transport='http://schemas.xmlsoap.org/soap/http'/>
+  <operation name='checkUserLogin'>
+    <soap:operation soapAction='urn:itpWebservice#checkUserLogin'/>
+    <input>
+      <soap:body use='encoded' namespace='urn:itpWebservice'
+        encodingStyle='http://schemas.xmlsoap.org/soap/encoding/'/>
+    </input>
+    <output>
+      <soap:body use='encoded' namespace='urn:itpWebservice'
+        encodingStyle='http://schemas.xmlsoap.org/soap/encoding/'/>
+    </output>
+  </operation>
+  <operation name='insertMongo'>
+    <soap:operation soapAction='urn:itpWebservice#insertMongo'/>
+    <input>
+      <soap:body use='encoded' namespace='urn:itpWebservice'
+        encodingStyle='http://schemas.xmlsoap.org/soap/encoding/'/>
+    </input>
+    <output>
+      <soap:body use='encoded' namespace='urn:itpWebservice'
+        encodingStyle='http://schemas.xmlsoap.org/soap/encoding/'/>
+    </output>
+  </operation>
+</binding> 
+
+<service name='wsService'>
+  <port name='wsPort' binding='tns:wsBinding'>
+    <soap:address location='http://localhost/itpproject/soapserver.php'/>
+  </port>
+</service>
+</definitions>

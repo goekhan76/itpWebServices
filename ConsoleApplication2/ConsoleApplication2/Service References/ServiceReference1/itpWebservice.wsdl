@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://localhost/itpproject/service.wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns="http://schemas.xmlsoap.org/wsdl/" name="itpWebservice" targetNamespace="http://localhost/itpproject/service.wsdl" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types />
+  <wsdl:message name="wsSqlRequest">
+    <wsdl:part name="username" type="xsd:string" />
+    <wsdl:part name="password" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="wsMonRequest">
+    <wsdl:part name="jsonData" type="xsd:string" />
+    <wsdl:part name="gameName" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="wsSqlResponse">
+    <wsdl:part name="Result" type="xsd:int" />
+  </wsdl:message>
+  <wsdl:message name="wsMonResponse">
+    <wsdl:part name="Result" type="xsd:int" />
+  </wsdl:message>
+  <wsdl:portType name="wsPortType">
+    <wsdl:operation name="checkUserLogin">
+      <wsdl:input message="tns:wsSqlRequest" />
+      <wsdl:output message="tns:wsSqlResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="insertMongo">
+      <wsdl:input message="tns:wsMonRequest" />
+      <wsdl:output message="tns:wsMonResponse" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="wsBinding" type="tns:wsPortType">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="rpc" />
+    <wsdl:operation name="checkUserLogin">
+      <soap:operation soapAction="urn:itpWebservice#checkUserLogin" />
+      <wsdl:input>
+        <soap:body use="encoded" namespace="urn:itpWebservice" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="encoded" namespace="urn:itpWebservice" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="insertMongo">
+      <soap:operation soapAction="urn:itpWebservice#insertMongo" />
+      <wsdl:input>
+        <soap:body use="encoded" namespace="urn:itpWebservice" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="encoded" namespace="urn:itpWebservice" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="wsService">
+    <wsdl:port name="wsPort" binding="tns:wsBinding">
+      <soap:address location="http://localhost/itpproject/soapserver.php" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
